@@ -1,24 +1,26 @@
 <?php
 session_start();
+include("header.html");
 ?>
 
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>LDAP Connection Interface</title>
-	</head>
-
 	<body>
-		<form method="post" action="connexion.php">
-			<fieldset>
-				<legend>Connection</legend>
-				<p>
-					<label for="user">Username :</label><input name="user" type="text" id="user" /><br />
-					<label for="password">Password :</label><input type="password" name="password" id="password" />
-				</p>
-			</fieldset>
-
-		    <p><input type="submit" value="Connect" /></p>
-		</form>
+        <main role="main" class="container">
+		    <form method="post" action="connexion.php" class="form-signin">
+                <h2 class="form-signin-heading">Mattermost OAuth</h2>
+                <div class="form-group">
+					<label for="user" class="sr-only">Username</label>
+                    <input name="user" type="text" class="form-control" id="user" autofocus/>
+                </div>
+                <div class="form-group">
+					<label for="password" class="sr-only">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Sign in</button>
+                </div>
+            </form>
+        </main>
 	</body>
-</html>
+<?php
+include("footer.html");
+?>
