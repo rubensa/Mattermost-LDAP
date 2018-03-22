@@ -19,7 +19,7 @@ if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
 }
 
 // set default error message
-$resp = array("error" => "Unknow error", "message" => "An unknown error has occured, please report this bug");
+$resp = array("error" => "Unknown error", "message" => "An unknown error has occured, please report this bug");
 
 // get information on user associated to the token
 $info_oauth = $server->getAccessTokenData(OAuth2\Request::createFromGlobals());
@@ -33,7 +33,8 @@ $ldap = new LDAP($hostname,$port);
 try
 {
 	$data = $ldap->getDataForMattermost($base,$filter,$bind_dn,$bind_pass,$search_attribute,$user);
-	$resp = array("name" => $data['cn'],"username" => $user,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
+	//$resp = array("name" => $data['cn'],"username" => $user,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
+	$resp = array("name" => $data['cn'],"username" => $data["cn"],"id" => (int)$assoc_id,"state" => "active","email" => $data['mail'],"login" => $user);
 }
 catch (Exception $e)
 {

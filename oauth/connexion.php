@@ -7,12 +7,18 @@ session_start();
 // include our LDAP object
 require_once __DIR__.'/LDAP/LDAP.php';
 require_once __DIR__.'/LDAP/config_ldap.php';
+include("header.html");
 
+echo '
+
+    <body>
+        <main role="main" class="container">
+';
 
 // Verify all fields have been filled 
 if (empty($_POST['user']) || empty($_POST['password'])) 
 {
-	echo 'You must fill each field<br /><br />';
+	echo 'Please fill in your Username and Password<br /><br />';
 	echo 'Click <a href="./index.php">here</a> to come back to login page';
 }
 else
@@ -20,12 +26,12 @@ else
 	// Check received data length (to prevent code injection) 
 	if (strlen($_POST['user']) > 15)
  	{
-  		echo 'Strange username ... Please try again<br /><br />';
+  		echo 'Username has incorrect format... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     }
     elseif (strlen($_POST['password']) > 50 || strlen($_POST['password']) <= 7)
     {
-    	echo 'Strange password ... Please try again<br /><br />';
+    	echo 'Password has incorrect format... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     } 
     else
@@ -33,7 +39,7 @@ else
    		// Remove every html tag and useless space on username (to prevent XSS)
    	   	$user=strip_tags(trim($_POST['user']));
 
-    	$user=$_POST['user'];
+    	$user=strtolower($_POST['user']);
     	$password=$_POST['password'];
 
     	// Open a LDAP connection
@@ -53,14 +59,21 @@ else
 		    }
 		 	else 
 		 	{
-		 		echo "Congratulation you are authenticated ! <br /><br /> However there is nothing to do here ...";
+		 		echo "Authentication Succesfull! <br />";
 			}
 	    }
 	    // check login on LDAP has failed. Login and password were invalid or LDAP is unreachable
 		else 
 		{
-		echo "Authentication failed ... Check your username and password.<br />If error persist contact your administrator.<br /><br />";
+		echo "Authentication Failed ... Check your username and password.<br />If error persist contact your administrator.<br /><br />";
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
 		}
 	}
 }
+
+echo '
+    </main>
+  </body';
+include("footer.html");
+
+?>
