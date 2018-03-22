@@ -1,16 +1,16 @@
 #####################################--CONFIGURATION FILE--########################################
 
 #Client configuration
-client_id=`openssl rand -hex 32`
-client_secret=`openssl rand -hex 32`
-redirect_uri="http://mattermost.company.com:8065/signup/gitlab/complete"
+client_id=${CLIENT_ID}
+client_secret=${CLIENT_SECRET}
+redirect_uri=${REDIRECT_URI}
 grant_types="authorization_code"
 scope="api"
 user_id=""
 
 #Database configuration
-oauth_user="oauth"
-oauth_db_name="oauth_db"
-oauth_pass="oauth_secure-pass"
-ip="127.0.0.1"
-port="5432"
+oauth_user=${DB_USER}
+oauth_db_name=${DB_NAME}
+oauth_pass=${DB_PASS}
+ip=${DB_HOST}
+port=${DB_PORT}

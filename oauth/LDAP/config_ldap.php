@@ -1,14 +1,20 @@
 <?php
-$hostname = "ldap://company.com/";
-$port = 389;
+$hostname = getenv('LDAP_HOST');
+$port = intval(getenv('LDAP_PORT'));
 
 // Attribute use to identify user on LDAP - ex : uid, mail, sAMAccountName	
-$search_attribute = "uid";
+$search_attribute = getenv('LDAP_SEARCH_ATTR');
 
 // variable use in resource.php 
-$base = "ou=People,o=Company";
-$filter = "objectClass=*";
+$base = getenv('LDAP_BASE_DN');
+$filter = getenv('LDAP_FILTER');
 
 // ldap service user to allow search in ldap
-$bind_dn = "";
-$bind_pass = "";
+$bind_dn = getenv('LDAP_BIND_DN');
+$bind_pass = getenv('LDAP_PASS');
+
+$attributes = array(
+  "mail" => getenv('LDAP_MAIL_ATTR'),
+  "name" => getenv('LDAP_NAME_ATTR'),
+  "username" => getenv('LDAP_USERNAME_ATTR'),
+);

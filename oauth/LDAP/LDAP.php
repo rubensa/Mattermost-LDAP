@@ -150,7 +150,7 @@ class LDAP implements LDAPInterface
      * @return 
      * An array with the user's mail and complete name.
      */
-    public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass, $search_attribute, $user) {
+    public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass, $search_attribute, $user, $attributes) {
 
     	$attribute=array("cn","mail");
 
@@ -158,9 +158,9 @@ class LDAP implements LDAPInterface
         {
             throw new InvalidArgumentException('First argument to LDAP/getData must be the ldap base directory name (string). Ex: o=Company');
         }
-        if (!is_string($filter)) 
+        if (!is_string($filter) && $filter != null) 
         {
-            throw new InvalidArgumentException('Second argument to LDAP/getData must be a filter to get relevant data. Often is the user id in ldap (string). Ex : uid=jdupont');
+            throw new InvalidArgumentException('Second argument to LDAP/getData must be an optional filter to get relevant data. Often is the user id in ldap (string). Ex : uid=jdupont');
         }
         if (!is_string($bind_dn) && $bind_dn != null) 
         {
@@ -213,19 +213,23 @@ class LDAP implements LDAPInterface
         	throw new Exception('An error has occured during ldap_first_entry execution. Please check parameter of LDAP/getData.');
         }
 
-        $mail = ldap_get_values($this->ldap_server, $data, "mail");
+        $mail = ldap_get_values($this->ldap_server, $data, $attributes['mail']);
         if (!$mail)
         {
-        	throw new Exception('An error has occured during ldap_get_values execution (mail). Please check parameter of LDAP/getData.');
+        	throw new Exception('An error has occured during ldap_get_values execution ('.$attributes['mail'].'). Please check parameter of LDAP/getData.');
         }
 
-        $cn = ldap_get_values($this->ldap_server, $data, "cn");
-        if (!$cn)
+        $name = ldap_get_values($this->ldap_server, $data, $attributes['name']);
+        if (!$name)
         {
-        	throw new Exception('An error has occured during ldap_get_values execution (complete name). Please check parameter of LDAP/getData.');
+        	throw new Exception('An error has occured during ldap_get_values execution ('.$attributes['name'].'). Please check parameter of LDAP/getData.');
         }
-
-        return array("mail" => $mail[0], "cn" => $cn[0]);
+        $username = ldap_get_values($this->ldap_server, $data, $attributes['username']);
+        if (!$username)
+        {
+        	throw new Exception('An error has occured during ldap_get_values execution ('.$attributes['username'].'). Please check parameter of LDAP/getData.');
+        }
+        return array("mail" => $mail[0], "name" => $name[0], "username" => $username[0]);
     }
 
     /*

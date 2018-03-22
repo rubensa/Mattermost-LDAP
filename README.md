@@ -5,7 +5,7 @@ This module provides an external LDAP authentication in Mattermost for the Team 
 
 ## Overview
 
-Currently, LDAP authentication in Mattermost is not featured in the Team Edition (only in the Enterprise Edition). Thus, the only way to get LDAP authentication in Mattermost is to install Gitlab and use its Single Sign On (SSO) feature. Gitlab allows LDAP authentication and transmits user data to Mattermost. So, anyone who wishes to use LDAP with Mattermost must run Gitlab, even if he does not use it, for the SSO feature. 
+Currently, LDAP authentication in Mattermost is not featured in the Team Edition (only in the Enterprise Edition). Thus, the only way to get LDAP authentication in Mattermost is to install Gitlab and use its Single Sign On (SSO) feature. Gitlab allows LDAP authentication and transmits user data to Mattermost. So, anyone who wishes to use LDAP with Mattermost must run Gitlab, even if he does not use it, for the SSO feature.
 
 However, although Gitlab is a nice software, it is resources-consuming and a bit complicated to manage if you just want the SSO feature. That's the reason why, this module provides an oauth server to only reproduce the Gitlab SSO feature and allows a simple and secure LDAP authentication to Mattermost.
 
@@ -13,15 +13,15 @@ The Mattermost-LDAP project uses the Gitlab authentication feature from Mattermo
 
 ## Module Description
 
-This module provides an Oauth2 server designed for php, a LDAP connector for PHP and some files for automatic configuration. Once installed and configured with Mattermost, the module allows LDAP authentication by replacing Gitlab SSO. This module allows many configuration settings to try to comply with your settings and configuration. Mattermost-LDAP can be used with MySQL or PostgreSQL database on many operating systems. See Limitation section for more information. 
+This module provides an Oauth2 server designed for php, a LDAP connector for PHP and some files for automatic configuration. Once installed and configured with Mattermost, the module allows LDAP authentication by replacing Gitlab SSO. This module allows many configuration settings to try to comply with your settings and configuration. Mattermost-LDAP can be used with MySQL or PostgreSQL database on many operating systems. See Limitation section for more information.
 
-## Setup 
+## Setup
 ### Requirements
-This module requires the following : 
+This module requires the following :
 
 * PHP (minimum 5.3.9)
 * php-ldap
-* php-pdo 
+* php-pdo
 * php-pgsql or php-mysql
 * httpd
 * postgresql or mariadb (mysql)
@@ -37,18 +37,12 @@ Install required packages :
 * For Centos 7, RHEL 7 and Fedora :
 ```
 #For PostgreSQL
-sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git 
-
-#For MySQL
-sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
+sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git
 ```
 * For Debian, ubuntu, Mint :
 ```
 #For PostgreSQL
-sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git 
-
-#For MySQL
-sudo apt-get -y install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
+sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git
 ```
 
 Start and enable service for Apache and Database (for all distribution using systemd):
@@ -58,13 +52,6 @@ sudo systemctl start httpd
 sudo systemctl start postgresql
 sudo systemctl enable httpd
 sudo systemctl enable postgresql
-
-
-#For MySQL
-sudo systemctl start httpd
-sudo systemctl start mariadb
-sudo systemctl enable httpd
-sudo systemctl enable mariadb
 ```
 
 Your system is ready to install and run Mattermost-LDAP module.
@@ -74,12 +61,12 @@ Your system is ready to install and run Mattermost-LDAP module.
 Clone (or download and extract) this repository in your /var/www/html (or your httpd root directory) :
 ```
 cd ~
-git clone https://github.com/crivaledaz/Mattermost-LDAP.git
+git clone https://github.com/rubensa/Mattermost-LDAP.git
 cd Mattermost-LDAP
 cp -r oauth/ /var/www/html/
 ```
 
-You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh" or "init_mysql.sh". These scripts try to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the config_init.sh file and modifying configuration variables. For postgresql, you can copy and paste following lines :
+You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh". These scripts try to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the config_init.sh file and modifying configuration variables. For postgresql, you can copy and paste following lines :
 ```
 nano config_init.sh
 ./init_postgres.sh
@@ -92,17 +79,17 @@ This script will automatically create and add a new client in the oauth server, 
 
 * Init script configuration :
 #### oauth_user
-Oauth user in the database. This user must have right on the oauth database to store oauth tokens. By default : oauth	
+Oauth user in the database. This user must have right on the oauth database to store oauth tokens. By default : oauth
 #### oauth_pass
 Oauth user password in the database. By default, oauth_secure-pass
 #### ip
-Hostname or IP address of the database. By default : 127.0.0.1 		
+Hostname or IP address of the database. By default : 127.0.0.1
 #### port
-The port to connect to the database. By default : 5432 (postgres) 		
+The port to connect to the database. By default : 5432 (postgres)
 #### oauth_db_name
-Database name for oauth server. By default	: oauth_db	
-#### client_id	
-The application ID shared with mattermost. This ID should be a random token. You can use openssl to generate this token (openssl rand -hex 32). By default, this variable contain the openssl command, which use the openssl package. The token will be printed at the end of the script. 
+Database name for oauth server. By default	: oauth_db
+#### client_id
+The application ID shared with mattermost. This ID should be a random token. You can use openssl to generate this token (openssl rand -hex 32). By default, this variable contain the openssl command, which use the openssl package. The token will be printed at the end of the script.
 #### client_secret
 The application secret shared with mattermost. This secret should be a random token. You can use openssl to generate this token (openssl rand -hex 32). By default, this variable contain the openssl command, which use the openssl package. The token will be printed at the end of the script. Secret must be different of the client ID.
 #### redirect_uri
@@ -121,7 +108,7 @@ User API Endpoint : http://HOSTNAME/oauth/resource.php
 Auth Endpoint: http://HOSTNAME/oauth/authorize.php
 Token Endpoint: http://HOSTNAME/oauth/token.php
 ```
-Change HOSTNAME by hostname or ip of the server where you have installed Mattermost-LDAP module. 
+Change HOSTNAME by hostname or ip of the server where you have installed Mattermost-LDAP module.
 
 * Database credentials
 Edit oauth/config_db.php and adapt, with your settings, to set up database in PHP.
@@ -131,20 +118,20 @@ Hostname or IP address of the database. (ex : localhost)
 #### $port
 The port of your database to connect. (ex : 5432 for postgres)
 #### $name
-Database name for oauth server. If you use init script make sure to use the same database name. (ex : oauth_db) 
+Database name for oauth server. If you use init script make sure to use the same database name. (ex : oauth_db)
 #### $type
-Database type to adapt PDO to your database server. Should be mysql or pgsql.
+Database type to adapt PDO to your database server. Should be pgsql.
 #### $username
 Oauth user in the database. This user must have right on the oauth database to store oauth tokens. If you use init script make sure to use the same database user. (ex : oauth)
 #### $password
 Oauth user password in the database. If you use init script make sure to use the same database user. (ex : oauth_secure-pass)
 
 * LDAP config
-Edit oauth/LDAP/config_ldap.php : 
+Edit oauth/LDAP/config_ldap.php :
 1. Provide your ldap address and port.
 2. Change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration.
 3. Change the user ID attribute ($ldap_attribute) to comply with your LDAP configuration (uid, sAMAccountName, email, cn ..).
-4. If necessary, you can provide a LDAP account to allow search in LDAP (only restrictive LDAP).  
+4. If necessary, you can provide a LDAP account to allow search in LDAP (only restrictive LDAP).
 
 #### $hostname
 Your LDAP hostname or LDAP IP, to connect to the LDAP server.
@@ -176,22 +163,13 @@ Keep in mind this will create a new account on your Mattermost server with infor
 ## Limitation
 This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL.
 
-Others operating systems has not been tested yet but should work fine. 
-
-MySQL has not really been tested so it is possible there is some bugs with.
+Others operating systems has not been tested yet but should work fine.
 
 
 ## To do list
  * Gathering LDAP config
- * Add CSS to make a beautiful interface for Oauth server
- * Create an associated Puppet module
  * Change Gitlab button
  * Security audit
-
-## Thanks
-
-I wish to thank my company and my colleagues for their help and support. Also, I thank Brent Shaffer for his Oauth-server-php project and its documentation.
-
 
 ## Known issues
  * LDAP authentication failed
@@ -210,6 +188,3 @@ I wish to thank my company and my colleagues for their help and support. Also, I
     AllowOverride All
 </Directory>
  ```
-
-
-

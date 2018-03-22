@@ -32,9 +32,9 @@ $ldap = new LDAP($hostname,$port);
 // Try to get user data on the LDAP
 try
 {
-	$data = $ldap->getDataForMattermost($base,$filter,$bind_dn,$bind_pass,$search_attribute,$user);
-	//$resp = array("name" => $data['cn'],"username" => $user,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
-	$resp = array("name" => $data['cn'],"username" => $data["cn"],"id" => (int)$assoc_id,"state" => "active","email" => $data['mail'],"login" => $user);
+	$data = $ldap->getDataForMattermost($base,$filter,$bind_dn,$bind_pass,$search_attribute,$user,$attributes);
+	$username = explode('@', $data['username']);
+	$resp = array("name" => $data['name'],"username" => $username[0],"id" => (int)$assoc_id,"state" => "active","email" => $data['mail'],"login" => $username[0]);
 }
 catch (Exception $e)
 {

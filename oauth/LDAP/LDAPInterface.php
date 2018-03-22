@@ -46,5 +46,5 @@ interface LDAPInterface
      * @return 
      * An array with the user's mail and complete name.
      */
-    public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass, $search_attribute, $user);
+    public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass, $search_attribute, $user, $attributes);
 }
