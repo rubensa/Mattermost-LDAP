@@ -13,7 +13,7 @@ The Mattermost-LDAP project uses the Gitlab authentication feature from Mattermo
 
 ## Module Description
 
-This module provides an Oauth2 server designed for php, a LDAP connector for PHP and some files for automatic configuration. Once installed and configured with Mattermost, the module allows LDAP authentication by replacing Gitlab SSO. This module allows many configuration settings to try to comply with your settings and configuration. Mattermost-LDAP can be used with MySQL or PostgreSQL database on many operating systems. See Limitation section for more information.
+This module provides an Oauth2 server designed for php, a LDAP connector for PHP and some files for automatic configuration. Once installed and configured with Mattermost, the module allows LDAP authentication by replacing Gitlab SSO. This module allows many configuration settings to try to comply with your settings and configuration. Mattermost-LDAP can be used with PostgreSQL database on many operating systems. See Limitation section for more information.
 
 ## Setup
 ### Requirements
@@ -22,10 +22,10 @@ This module requires the following :
 * PHP (minimum 5.3.9)
 * php-ldap
 * php-pdo
-* php-pgsql or php-mysql
+* php-pgsql
 * httpd
-* postgresql or mariadb (mysql)
-* postgresql-server or mariadb-server
+* postgresql
+* postgresql-server
 * git
 
 Obviously, you must have a Mattermost Server installed and be administrator on it, and a LDAP server configured.
@@ -36,18 +36,15 @@ Install required packages :
 
 * For Centos 7, RHEL 7 and Fedora :
 ```
-#For PostgreSQL
 sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git
 ```
 * For Debian, ubuntu, Mint :
 ```
-#For PostgreSQL
 sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git
 ```
 
 Start and enable service for Apache and Database (for all distribution using systemd):
 ```
-#For PostgreSQL
 sudo systemctl start httpd
 sudo systemctl start postgresql
 sudo systemctl enable httpd
@@ -66,7 +63,7 @@ cd Mattermost-LDAP
 cp -r oauth/ /var/www/html/
 ```
 
-You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh". These scripts try to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the config_init.sh file and modifying configuration variables. For postgresql, you can copy and paste following lines :
+You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh". This script tries to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also creates all tables necessary for the module. If script fails, please report here, and try to configure manually your database by adapting commands in script. Before running the script you can change the default settings by editing the config_init.sh file and modifying configuration variables. You can copy and paste following lines :
 ```
 nano config_init.sh
 ./init_postgres.sh
